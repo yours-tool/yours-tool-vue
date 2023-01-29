@@ -8,15 +8,27 @@
       active-text-color="#ffd04b"
       router
   >
-    <el-menu-item index="json">Processing Center</el-menu-item>
-    <el-menu-item index="test">Info</el-menu-item>
-    <el-menu-item index="3">Orders</el-menu-item>
+    <el-menu-item v-for="(menuItem,menuIndex) in menuList" :index="menuItem.index" :key="menuIndex">
+      {{ menuItem.name }}
+    </el-menu-item>
   </el-menu>
 </template>
 
 <script setup>
 import {ref} from "vue";
+
 const activeIndex = ref('1')
+const menuList = [
+  {
+    name: "倒计时",
+    index: "countdown"
+  },
+  {
+    name: "Json转换",
+    index: "json"
+  }
+
+]
 </script>
 
 <style scoped>

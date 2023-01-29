@@ -1,5 +1,5 @@
 <template>
-  <div class="jsontest">111111</div>
+  <div class="json">111111</div>
 </template>
 
 <script setup >
@@ -10,9 +10,7 @@ const activeIndex = ref('1')
 </script>
 
 <style scoped>
-.jsontest{
-  width: 1000px;
-  height: 1000px;
-  background-color: #0b0c0e;
+.json{
+
 }
 </style>
