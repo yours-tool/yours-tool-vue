@@ -1,7 +1,7 @@
 import {createRouter,createWebHistory} from "vue-router";
 import Home from "@/views/Home";
 import Json from "@/views/Json";
-import Countdown from "@/views/Countdown";
+import Countdown from "@/views/CountDown";
 const routes=[
     {
         path:"/",

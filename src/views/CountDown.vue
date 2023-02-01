@@ -33,15 +33,65 @@
           </div>
         </div>
       </div>
-
     </div>
-
+    <!-- 对话框 -->
+    <el-dialog v-model="dialogFormVisible" :title="countDownTitle">
+      <el-form :model="form">
+        <el-form-item label="Promotion name" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="Zones" :label-width="formLabelWidth">
+          <el-select v-model="form.region" placeholder="Please select a zone">
+            <el-option label="Zone No.1" value="shanghai" />
+            <el-option label="Zone No.2" value="beijing" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="money" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off" />
+        </el-form-item>
+        <el-form-item  label="Zones" :label-width="formLabelWidth">
+          <el-date-picker
+              v-model="input"
+              type="date"
+              placeholder="Pick a day"
+          />
+        </el-form-item>
+        <el-form-item  label="Zones" :label-width="formLabelWidth">
+          <el-button>新增</el-button>
+          <div v-for="(item,index) in list" :key="index">
+            <el-input v-model="form.name" autocomplete="off" />
+            <el-button>删除</el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">
+          Confirm
+        </el-button>
+      </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { reactive,ref } from 'vue'
+const dialogFormVisible = ref(true)
+const countDownTitle = ref('true')
+const formLabelWidth = '140px'
 const input = ref('')
+const form = reactive({
+  name: '',
+  region: '',
+  date1: '',
+  date2: '',
+  delivery: false,
+  type: [],
+  resource: '',
+  desc: '',
+})
 let list = [
   {
     name: "测试11",
