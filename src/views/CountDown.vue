@@ -38,28 +38,28 @@
       </div>
     </div>
     <!-- 对话框 -->
-    <el-dialog v-model="dialogFormVisible" :title="countDownTitle">
-      <el-form :model="form">
-        <el-form-item label="Promotion name" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off" />
+    <el-dialog v-model="dialogFormVisible" :title="countDownTitle" class="dialog" width="30%">
+      <el-form :model="form" class="form">
+        <el-form-item label="主题" :label-width="formLabelWidth">
+          <el-input v-model="form.subject" class="input" />
         </el-form-item>
-        <el-form-item label="Zones" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="Please select a zone">
+        <el-form-item label="类型" :label-width="formLabelWidth">
+          <el-select v-model="form.type" placeholder="请选择类型">
             <el-option label="Zone No.1" value="shanghai" />
             <el-option label="Zone No.2" value="beijing" />
           </el-select>
         </el-form-item>
         <el-form-item label="money" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off" />
+          <el-input v-model="form.money" class="input" />
         </el-form-item>
-        <el-form-item  label="Zones" :label-width="formLabelWidth">
+        <el-form-item  label="日期" :label-width="formLabelWidth">
           <el-date-picker
               v-model="input"
               type="date"
               placeholder="Pick a day"
           />
         </el-form-item>
-        <el-form-item  label="Zones" :label-width="formLabelWidth">
+        <el-form-item  label="提醒" :label-width="formLabelWidth">
           <div class="remind">
             <el-button type="primary" class="add">新增</el-button>
             <div v-for="(item,index) in list" :key="index" class="single">
@@ -231,6 +231,15 @@ export default {
 
     }
   }
+  .dialog{
+
+    .form{
+      .input{
+        width: 30%;
+      }
+    }
+  }
+
 }
 
 .remind{
