@@ -8,7 +8,7 @@
             placeholder="按标签搜索"
             suffix-icon="Search"
         />
-        <el-button type="primary" >新增</el-button>
+        <el-button type="primary" @click="addCountDown()">新增</el-button>
       </div>
       <div class="card">
         <div v-for="(item,index) in list" :key="index" class="single">
@@ -57,18 +57,21 @@
           />
         </el-form-item>
         <el-form-item  label="Zones" :label-width="formLabelWidth">
-          <el-button>新增</el-button>
-          <div v-for="(item,index) in list" :key="index">
-            <el-input v-model="form.name" autocomplete="off" />
-            <el-button>删除</el-button>
+          <div class="remind">
+            <el-button type="primary" class="add">新增</el-button>
+            <div v-for="(item,index) in list" :key="index" class="single">
+              <el-input v-model="form.name" autocomplete="off" />
+              <el-button>删除</el-button>
+            </div>
           </div>
+
         </el-form-item>
       </el-form>
       <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false">
-          Confirm
+          确认
         </el-button>
       </span>
       </template>
@@ -76,48 +79,59 @@
   </div>
 </template>
 
-<script setup>
-import { reactive,ref } from 'vue'
-const dialogFormVisible = ref(true)
-const countDownTitle = ref('true')
-const formLabelWidth = '140px'
-const input = ref('')
-const form = reactive({
-  name: '',
-  region: '',
-  date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
-  resource: '',
-  desc: '',
-})
-let list = [
-  {
-    name: "测试11",
-    content: "11",
-    type:"1",
-    label:["标签1","标签2"]
+<script>
+
+export default {
+  data(){
+    return{
+      dialogFormVisible:false,
+      countDownTitle:'标题',
+      formLabelWidth:'140px',
+      input:'',
+      form:{
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: '',
+      },
+      list:[
+        {
+          name: "测试11",
+          content: "11",
+          type:"1",
+          label:["标签1","标签2"]
+        },
+        {
+          name: "测试22",
+          content: "22",
+          type:"2",
+          label:["标签3","标签4"]
+        },
+        {
+          name: "测试22",
+          content: "22",
+          type:"1",
+          label:["标签3","标签4"]
+        },
+        {
+          name: "测试22",
+          content: "22",
+          type:"1",
+          label:["标签3","标签4"]
+        }
+      ]
+    }
   },
-  {
-    name: "测试22",
-    content: "22",
-    type:"2",
-    label:["标签3","标签4"]
-  },
-  {
-    name: "测试22",
-    content: "22",
-    type:"1",
-    label:["标签3","标签4"]
-  },
-  {
-    name: "测试22",
-    content: "22",
-    type:"1",
-    label:["标签3","标签4"]
+  methods:{
+    addCountDown(){
+      this.dialogFormVisible=true;
+    }
   }
-]
+}
 </script>
 
 <style lang="less" scoped>
@@ -155,6 +169,20 @@ let list = [
       }
 
     }
+  }
+}
+
+.remind{
+  display: flex;
+  flex-direction: column;
+  .add{
+    width: 50px;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+  .single{
+    display: flex;
+    flex-direction: row;
   }
 }
 
