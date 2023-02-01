@@ -14,7 +14,7 @@
         <div v-for="(item,index) in list" :key="index" class="single">
           <div class="header">
             <span class="subject">{{item.subject}}</span>
-            <div>
+            <div class="button">
               <el-button class="button" size="small" type="primary" @click="modifyCountDown()">编辑</el-button>
               <el-button class="button" size="small" type="danger" >删除</el-button>
             </div>
@@ -31,7 +31,7 @@
               </div>
             </div>
             <div class="label">
-              <div v-for="(item,index) in item.label" :key="index"></div>
+              <el-tag class="tag" v-for="(labelItem,labelIndex) in item.label" :key="labelIndex">{{ labelItem }}</el-tag>
             </div>
           </div>
         </div>
@@ -108,7 +108,7 @@ export default {
           date:"1",
           day:"1",
           money:"1",
-          label:["标签1","标签2"]
+          label:["标签1","标签2","标签2"]
         },
         {
           subject: "测试11",
@@ -124,7 +124,7 @@ export default {
           date:"1",
           day:"1",
           money:"1",
-          label:["标签1","标签2"]
+          label:["标签1","标签2","标签2","标签2","标签2","标签2"]
         },
         {
           subject: "测试11",
@@ -180,6 +180,9 @@ export default {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
+          .button{
+            margin-top: 3px;
+          }
           .subject{
             text-shadow: 1px 0px 3px #98650a, 2px 1px 3px #33f5d7, -2px 0px 7px #cf1ee3;
             font-size: 18px;
@@ -216,7 +219,12 @@ export default {
             }
           }
           .label{
-
+            margin: 10px 10px 10px 0px;
+            width: 180px;
+            .tag{
+              margin-left: 5px;
+              margin-top: 5px;
+            }
           }
         }
       }
