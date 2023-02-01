@@ -13,23 +13,26 @@
       <div class="card">
         <div v-for="(item,index) in list" :key="index" class="single">
           <div class="header">
-            <span>{{item.name}}</span>
+            <span class="subject">{{item.subject}}</span>
             <div>
-              <el-button class="button" size="small" type="primary" >编辑</el-button>
+              <el-button class="button" size="small" type="primary" @click="modifyCountDown()">编辑</el-button>
               <el-button class="button" size="small" type="danger" >删除</el-button>
             </div>
           </div>
-          <div>
-            <div>
-              <div>类型:{{item.name}}</div>
-              <div>内容:{{item.content}}</div>
-              <div>距离{{item.name}}XXX日子还有{{item.name}}天</div>
-              <div>预计花费:{{item.name}}</div>
+          <div class="content">
+            <div class="remark" >
+              <div class="top">
+                <div>{{item.type}}</div>
+                <div>{{item.date}}</div>
+              </div>
+              <div class="bottom">
+                <div>{{item.day}}天</div>
+                <div>预计花费:{{item.money}}</div>
+              </div>
             </div>
-            <div>
-              <div v-for="(item,index) in list" :key="index"></div>
+            <div class="label">
+              <div v-for="(item,index) in item.label" :key="index"></div>
             </div>
-
           </div>
         </div>
       </div>
@@ -100,34 +103,47 @@ export default {
       },
       list:[
         {
-          name: "测试11",
-          content: "11",
-          type:"1",
+          subject: "测试11",
+          type: "11",
+          date:"1",
+          day:"1",
+          money:"1",
           label:["标签1","标签2"]
         },
         {
-          name: "测试22",
-          content: "22",
-          type:"2",
-          label:["标签3","标签4"]
+          subject: "测试11",
+          type: "11",
+          date:"1",
+          day:"1",
+          money:"1",
+          label:["标签1","标签2"]
         },
         {
-          name: "测试22",
-          content: "22",
-          type:"1",
-          label:["标签3","标签4"]
+          subject: "测试11",
+          type: "11",
+          date:"1",
+          day:"1",
+          money:"1",
+          label:["标签1","标签2"]
         },
         {
-          name: "测试22",
-          content: "22",
-          type:"1",
-          label:["标签3","标签4"]
+          subject: "测试11",
+          type: "11",
+          date:"1",
+          day:"1",
+          money:"1",
+          label:["标签1","标签2"]
         }
       ]
     }
   },
   methods:{
+    //添加倒计时
     addCountDown(){
+      this.dialogFormVisible=true;
+    },
+    //修改倒计时
+    modifyCountDown(){
       this.dialogFormVisible=true;
     }
   }
@@ -161,10 +177,47 @@ export default {
         border-radius: 5px;
         .header{
           margin: 5px 10px 5px 10px;
-
           display: flex;
           flex-direction: row;
           justify-content: space-between;
+          .subject{
+            text-shadow: 1px 0px 3px #98650a, 2px 1px 3px #33f5d7, -2px 0px 7px #cf1ee3;
+            font-size: 18px;
+            color: #1673c7;
+          }
+        }
+        .content{
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          .remark{
+            display: flex;
+            flex-direction: column;
+            //align-items: flex-start;
+            margin: 10px 20px 10px 20px;
+            width: 200px;
+            text-align: left;
+            .top{
+              display: flex;
+              flex-direction: row;
+              //justify-content: flex-start;
+              >div{
+                width: 100px;
+              }
+            }
+            .bottom{
+              display: flex;
+              flex-direction: row;
+              //justify-content: flex-start;
+              margin-top: 10px;
+              >div{
+                width: 100px;
+              }
+            }
+          }
+          .label{
+
+          }
         }
       }
 
