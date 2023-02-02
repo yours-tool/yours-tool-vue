@@ -27,7 +27,7 @@
               </div>
               <div class="bottom">
                 <div>{{item.day}}天</div>
-                <div>预计花费:{{item.money}}</div>
+                <div>花费:{{item.money}}</div>
               </div>
             </div>
             <div class="label">
@@ -36,12 +36,19 @@
           </div>
         </div>
       </div>
+      <el-pagination
+          v-show="data.total > 0"
+          :total="data.total"
+          layout="prev, pager, next, jumper"
+          :page-size="data.pageSize"
+          @pagination="handleQuery()"
+      />
     </div>
     <!-- 对话框 -->
-    <el-dialog v-model="dialogFormVisible" :title="countDownTitle" class="dialog" width="30%">
+    <el-dialog v-model="dialogFormVisible" :title="countDownTitle">
       <el-form :model="form" class="form">
         <el-form-item label="主题" :label-width="formLabelWidth">
-          <el-input v-model="form.subject" class="input" />
+          <el-input v-model="form.subject" class="input"/>
         </el-form-item>
         <el-form-item label="类型" :label-width="formLabelWidth">
           <el-select v-model="form.type" placeholder="请选择类型">
@@ -49,26 +56,26 @@
             <el-option label="Zone No.2" value="beijing" />
           </el-select>
         </el-form-item>
-        <el-form-item label="money" :label-width="formLabelWidth">
+        <el-form-item label="花费" :label-width="formLabelWidth">
           <el-input v-model="form.money" class="input" />
         </el-form-item>
         <el-form-item  label="日期" :label-width="formLabelWidth">
           <el-date-picker
               v-model="input"
               type="date"
-              placeholder="Pick a day"
+              placeholder="请选择日期"
           />
         </el-form-item>
-        <el-form-item  label="提醒" :label-width="formLabelWidth">
-          <div class="remind">
-            <el-button type="primary" class="add">新增</el-button>
-            <div v-for="(item,index) in list" :key="index" class="single">
-              <el-input v-model="form.name" autocomplete="off" />
-              <el-button>删除</el-button>
-            </div>
-          </div>
+<!--        <el-form-item  label="提醒" :label-width="formLabelWidth">-->
+<!--          <div class="remind">-->
+<!--            <el-button type="primary" class="add">新增</el-button>-->
+<!--            <div v-for="(item,index) in list" :key="index" class="single">-->
+<!--              <el-input v-model="form.name" class="input"/>-->
+<!--              <el-button type="danger" class="delete">删除</el-button>-->
+<!--            </div>-->
+<!--          </div>-->
 
-        </el-form-item>
+<!--        </el-form-item>-->
       </el-form>
       <template #footer>
       <span class="dialog-footer">
@@ -87,9 +94,13 @@
 export default {
   data(){
     return{
+      data:{
+        total:10,
+        pageSize:3,
+      },
       dialogFormVisible:false,
       countDownTitle:'标题',
-      formLabelWidth:'140px',
+      formLabelWidth:'100px',
       input:'',
       form:{
         name: '',
@@ -145,6 +156,10 @@ export default {
     //修改倒计时
     modifyCountDown(){
       this.dialogFormVisible=true;
+    },
+    //分页查询
+    handleQuery(){
+
     }
   }
 }
@@ -232,10 +247,9 @@ export default {
     }
   }
   .dialog{
-
+    //width: 200px;
     .form{
       .input{
-        width: 30%;
       }
     }
   }
@@ -248,11 +262,20 @@ export default {
   .add{
     width: 50px;
     margin-left: 10px;
-    margin-top: 10px;
+    //margin-top: 10px;
   }
   .single{
     display: flex;
     flex-direction: row;
+    .input{
+      margin-top: 10px;
+      height: 30px;
+    }
+    .delete{
+      width: 50px;
+      margin-top: 10px;
+      margin-left: 5px;
+    }
   }
 }
 
