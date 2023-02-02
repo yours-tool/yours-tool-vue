@@ -5,9 +5,16 @@
         <el-input class="input"
             v-model="input"
             size="small"
-            placeholder="按标签搜索"
-            suffix-icon="Search"
+            placeholder="请输入主题/标签"
+
         />
+        <el-select v-model="form.type" placeholder="请选择类型" class="select" >
+          <el-option  v-for="(typeOptionItem,typeOptionIndex) in typeOption"
+                      :key="typeOptionIndex"
+                      :label="typeOptionItem.label"
+                      :value="typeOptionItem.value" />
+        </el-select>
+        <el-button type="primary" class="search" @click="searchCountDown()">搜索</el-button>
         <el-button type="primary" @click="addCountDown()">新增</el-button>
       </div>
       <div class="card">
@@ -23,11 +30,11 @@
             <div class="remark" >
               <div class="top">
                 <div>{{item.type}}</div>
-                <div>{{item.date}}</div>
+                <div>花费:{{item.money}}</div>
               </div>
               <div class="bottom">
+                <div>{{item.date}}</div>
                 <div>{{item.day}}天</div>
-                <div>花费:{{item.money}}</div>
               </div>
             </div>
             <div class="label">
@@ -52,8 +59,10 @@
         </el-form-item>
         <el-form-item label="类型" :label-width="formLabelWidth">
           <el-select v-model="form.type" placeholder="请选择类型">
-            <el-option label="Zone No.1" value="shanghai" />
-            <el-option label="Zone No.2" value="beijing" />
+            <el-option  v-for="(typeOptionItem,typeOptionIndex) in typeOption"
+                        :key="typeOptionIndex"
+                        :label="typeOptionItem.label"
+                        :value="typeOptionItem.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="花费" :label-width="formLabelWidth">
@@ -65,6 +74,29 @@
               type="date"
               placeholder="请选择日期"
           />
+        </el-form-item>
+        <el-form-item label="标签" :label-width="formLabelWidth">
+          <div class="label">
+            <el-tag v-for="(labelItem,labelIndex) in form.label" :key="labelIndex"
+                    class="tag"
+                    closable
+                    :disable-transitions="false"
+                    @close="tagHandleClose(labelIndex)">
+              {{ labelItem }}
+            </el-tag>
+            <el-input
+                v-if="tag.inputVisible"
+                ref="InputRef"
+                v-model="tag.inputValue"
+                class="input"
+                size="small"
+                @keyup.enter="tagHandleInputConfirm()"
+                @blur="tagHandleInputConfirm()"
+            />
+            <el-button v-else class="button-new-tag ml-1" size="small" @click="tagShowInput()">
+              + 新标签
+            </el-button>
+          </div>
         </el-form-item>
 <!--        <el-form-item  label="提醒" :label-width="formLabelWidth">-->
 <!--          <div class="remind">-->
@@ -94,6 +126,16 @@
 export default {
   data(){
     return{
+      typeOption:[
+        {
+          value:"11",
+          label:"11"
+        },
+      ],
+      tag:{
+        inputVisible:false,
+        inputValue:''
+      },
       data:{
         total:10,
         pageSize:3,
@@ -103,52 +145,53 @@ export default {
       formLabelWidth:'100px',
       input:'',
       form:{
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: '',
+        subject: '',
+        type: '',
+        money: undefined,
+        date: '',
+        label: ["标签1","标签3","标签2"]
       },
       list:[
         {
-          subject: "测试11",
-          type: "11",
-          date:"1",
+          subject: "中秋节",
+          type: "法定节假日",
+          date:"2022年1月1日",
           day:"1",
-          money:"1",
+          money:"1.00",
           label:["标签1","标签2","标签2"]
         },
         {
-          subject: "测试11",
+          subject: "国庆节",
           type: "11",
-          date:"1",
+          date:"2222年11月11日",
           day:"1",
-          money:"1",
+          money:"100",
           label:["标签1","标签2"]
         },
         {
-          subject: "测试11",
-          type: "11",
-          date:"1",
-          day:"1",
-          money:"1",
+          subject: "去XX的日子",
+          type: "自定义",
+          date:"2000年11月11日",
+          day:"100",
+          money:"100",
           label:["标签1","标签2","标签2","标签2","标签2","标签2"]
         },
         {
-          subject: "测试11",
-          type: "11",
-          date:"1",
-          day:"1",
-          money:"1",
+          subject: "倒计时的日子",
+          type: "倒计时",
+          date:"2000年11月11日",
+          day:"54",
+          money:"1541224",
           label:["标签1","标签2"]
         }
       ]
     }
   },
   methods:{
+    //搜索倒计时
+    searchCountDown(){
+
+    },
     //添加倒计时
     addCountDown(){
       this.dialogFormVisible=true;
@@ -160,6 +203,24 @@ export default {
     //分页查询
     handleQuery(){
 
+    },
+
+    //tag关闭事件
+    tagHandleClose(labelIndex){
+      this.form.label.splice(labelIndex,1);
+    },
+
+    //tag显示输入框
+    tagShowInput(){
+      this.tag.inputVisible = true
+    },
+    //tag输入完毕
+    tagHandleInputConfirm(){
+      if (this.tag.inputValue) {
+        this.form.label.push(this.tag.inputValue)
+      }
+      this.tag.inputVisible = false
+      this.tag.inputValue= ''
     }
   }
 }
@@ -180,7 +241,14 @@ export default {
       flex-direction: row;
       justify-content: space-between;
       .input{
-        width: 300px;
+        width: 150px;
+      }
+      .select{
+        margin-left: 10px;
+        width: 150px;
+      }
+      .search{
+        margin-left: 10px;
       }
     }
 
@@ -240,7 +308,11 @@ export default {
               margin-left: 5px;
               margin-top: 5px;
             }
+            .input{
+              width: 100px;
+            }
           }
+
         }
       }
 
