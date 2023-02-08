@@ -122,7 +122,7 @@
 </template>
 
 <script>
-
+import {countDownAdd} from "../api/countDown"
 export default {
   data(){
     return{
@@ -190,7 +190,12 @@ export default {
   methods:{
     //搜索倒计时
     searchCountDown(){
-
+      countDownAdd({
+        "subject":"11",
+        "type":"1111",
+        "date":"2020-11-11"
+      }).then((res) => {
+      });
     },
     //添加倒计时
     addCountDown(){
