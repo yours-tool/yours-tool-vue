@@ -3,12 +3,12 @@
     <div class="custom">
       <div class="function">
         <el-input class="input"
-            v-model="input"
+            clearable
+            v-model="searchData.content"
             size="small"
             placeholder="请输入主题/标签"
-
         />
-        <el-select v-model="form.type" placeholder="请选择类型" class="select" >
+        <el-select v-model="searchData.type" clearable placeholder="请选择类型" class="select" >
           <el-option  v-for="(typeOptionItem,typeOptionIndex) in typeOption"
                       :key="typeOptionIndex"
                       :label="typeOptionItem.label"
@@ -132,6 +132,10 @@ import {
 export default {
   data(){
     return{
+      searchData:{
+        content:'',
+        type: '',
+      },
       typeOption:[
         {value:"FESTIVAL", label:"法定节日"},
         {value:"STATUTORY_HOLIDAY", label:"法定节假日"},
@@ -144,7 +148,7 @@ export default {
       },
       data:{
         total:10,
-        pageSize:5,
+        pageSize:10,
         currentPage:1,
       },
       dialogFormVisible:false,
@@ -177,7 +181,7 @@ export default {
   methods:{
     //搜索倒计时
     searchCountDown(){
-
+      this.handleQuery();
     },
     //添加倒计时
     addCountDown(){
@@ -239,6 +243,8 @@ export default {
       let params = {
         page: this.data.currentPage,
         size: this.data.pageSize,
+        content:this.searchData.content,
+        type:this.searchData.type
       };
       countDownList(params).then((res) => {
         this.list = res.dataList;
