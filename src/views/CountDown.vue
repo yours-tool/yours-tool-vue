@@ -23,14 +23,14 @@
             <span class="subject">{{item.subject}}</span>
             <div class="button">
               <el-button class="button" size="small" type="primary" @click="modifyCountDown(item.countDownId)">编辑</el-button>
-              <el-button class="button" size="small" type="danger" >删除</el-button>
+              <el-button class="button" size="small" type="danger" @click="deleteCountDown(item.countDownId)">删除</el-button>
             </div>
           </div>
           <div class="content">
             <div class="remark" >
               <div class="top">
                 <div>{{item.type}}</div>
-                <div>金额:{{item.money}}</div>
+                <div v-show="item.money!=0">金额:{{item.money}}</div>
               </div>
               <div class="bottom">
                 <div>{{item.date}}</div>
@@ -127,6 +127,7 @@ import {
   countDownList,
   countDownDetail,
   countDownUpdate,
+  countDownDelete,
 } from "../api/countDown"
 export default {
   data(){
@@ -184,17 +185,26 @@ export default {
     },
     affirmCountDown(){
       let params = this.form;
-      if (this.form.countDownId==undefined){
+      if (params.countDownId==undefined){
         countDownAdd(params).then((res) => {
+          this.$message({
+            message: '添加成功',
+            type: 'success',
+          })
           this.dialogFormVisible=false;
+          this.handleQuery();
         })
       }else {
         countDownUpdate(params).then((res)=>{
+          this.$message({
+            message: '修改成功',
+            type: 'success',
+          })
           this.dialogFormVisible=false;
+          this.handleQuery();
         })
       }
 
-      this.resetForm();
     },
     cancelCountDown(){
       this.resetForm();
@@ -206,6 +216,23 @@ export default {
         this.form = res
         this.dialogFormVisible=true;
       })
+    },
+    //删除倒计时
+    deleteCountDown(countDownId){
+      this.$confirm("确定删除吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
+        countDownDelete(countDownId).then((res) => {
+          this.$message({
+            message: '删除成功',
+            type: 'success',
+          })
+          this.handleQuery();
+        })
+      }).catch((e) => {});
+
     },
     //分页查询
     handleQuery(){

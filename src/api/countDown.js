@@ -32,3 +32,11 @@ export function countDownUpdate(data) {
   });
 }
 
+export function countDownDelete(param) {
+  return request({
+    url: "countDown/"+param,
+    method: "delete",
+  });
+}
+
+
