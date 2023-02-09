@@ -184,9 +184,16 @@ export default {
     },
     affirmCountDown(){
       let params = this.form;
-      countDownAdd(params).then((res) => {
+      if (this.form.countDownId==undefined){
+        countDownAdd(params).then((res) => {
+          this.dialogFormVisible=false;
+        })
+      }else {
+        countDownUpdate(params).then((res)=>{
+          this.dialogFormVisible=false;
+        })
+      }
 
-      })
       this.resetForm();
     },
     cancelCountDown(){
