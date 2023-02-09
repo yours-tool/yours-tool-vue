@@ -53,7 +53,7 @@
       />
     </div>
     <!-- 对话框 -->
-    <el-dialog v-model="dialogFormVisible" :title="countDownTitle">
+    <el-dialog v-model="dialogFormVisible" :title="countDownTitle" @close="cancelCountDown()">
       <el-form :model="form" class="form">
         <el-form-item label="主题" :label-width="formLabelWidth">
           <el-input v-model="form.subject" class="input"/>
@@ -107,7 +107,6 @@
 <!--              <el-button type="danger" class="delete">删除</el-button>-->
 <!--            </div>-->
 <!--          </div>-->
-
 <!--        </el-form-item>-->
       </el-form>
       <template #footer>
@@ -188,6 +187,10 @@ export default {
       countDownAdd(params).then((res) => {
 
       })
+      this.resetForm();
+    },
+    cancelCountDown(){
+      this.resetForm();
     },
     //修改倒计时
     modifyCountDown(countDownId){
@@ -226,6 +229,16 @@ export default {
       }
       this.tag.inputVisible = false
       this.tag.inputValue= ''
+    },
+    resetForm(){
+      this.form={
+        countDownId:undefined,
+        subject: '',
+        type: '',
+        money: undefined,
+        date: '',
+        label: []
+      }
     }
   }
 }
