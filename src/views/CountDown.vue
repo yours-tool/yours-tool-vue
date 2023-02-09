@@ -22,7 +22,7 @@
           <div class="header">
             <span class="subject">{{item.subject}}</span>
             <div class="button">
-              <el-button class="button" size="small" type="primary" @click="modifyCountDown()">编辑</el-button>
+              <el-button class="button" size="small" type="primary" @click="modifyCountDown(item.countDownId)">编辑</el-button>
               <el-button class="button" size="small" type="danger" >删除</el-button>
             </div>
           </div>
@@ -30,7 +30,7 @@
             <div class="remark" >
               <div class="top">
                 <div>{{item.type}}</div>
-                <div>花费:{{item.money}}</div>
+                <div>金额:{{item.money}}</div>
               </div>
               <div class="bottom">
                 <div>{{item.date}}</div>
@@ -48,7 +48,8 @@
           :total="data.total"
           layout="prev, pager, next, jumper"
           :page-size="data.pageSize"
-          @pagination="handleQuery()"
+          v-model:current-page="data.currentPage"
+          @current-change="handleQuery()"
       />
     </div>
     <!-- 对话框 -->
@@ -65,12 +66,12 @@
                         :value="typeOptionItem.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="花费" :label-width="formLabelWidth">
+        <el-form-item label="金额" :label-width="formLabelWidth">
           <el-input v-model="form.money" class="input" />
         </el-form-item>
         <el-form-item  label="日期" :label-width="formLabelWidth">
           <el-date-picker
-              v-model="input"
+              v-model="form.date"
               type="date"
               placeholder="请选择日期"
           />
@@ -112,7 +113,7 @@
       <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">
+        <el-button type="primary" @click="affirmCountDown()">
           确认
         </el-button>
       </span>
@@ -122,15 +123,20 @@
 </template>
 
 <script>
-import {countDownAdd} from "../api/countDown"
+import {
+  countDownAdd,
+  countDownList,
+  countDownDetail,
+  countDownUpdate,
+} from "../api/countDown"
 export default {
   data(){
     return{
       typeOption:[
-        {
-          value:"11",
-          label:"11"
-        },
+        {value:"FESTIVAL", label:"法定节日"},
+        {value:"STATUTORY_HOLIDAY", label:"法定节假日"},
+        {value:"RENEW", label:"续费"},
+        {value:"EVENT", label:"事件"},
       ],
       tag:{
         inputVisible:false,
@@ -138,36 +144,22 @@ export default {
       },
       data:{
         total:10,
-        pageSize:3,
+        pageSize:5,
+        currentPage:1,
       },
       dialogFormVisible:false,
       countDownTitle:'标题',
       formLabelWidth:'100px',
       input:'',
       form:{
+        countDownId:undefined,
         subject: '',
         type: '',
         money: undefined,
         date: '',
-        label: ["标签1","标签3","标签2"]
+        label: []
       },
       list:[
-        {
-          subject: "中秋节",
-          type: "法定节假日",
-          date:"2022年1月1日",
-          day:"1",
-          money:"1.00",
-          label:["标签1","标签2","标签2"]
-        },
-        {
-          subject: "国庆节",
-          type: "11",
-          date:"2222年11月11日",
-          day:"1",
-          money:"100",
-          label:["标签1","标签2"]
-        },
         {
           subject: "去XX的日子",
           type: "自定义",
@@ -176,38 +168,46 @@ export default {
           money:"100",
           label:["标签1","标签2","标签2","标签2","标签2","标签2"]
         },
-        {
-          subject: "倒计时的日子",
-          type: "倒计时",
-          date:"2000年11月11日",
-          day:"54",
-          money:"1541224",
-          label:["标签1","标签2"]
-        }
       ]
     }
+  },
+  created() {
+    this.handleQuery();
   },
   methods:{
     //搜索倒计时
     searchCountDown(){
-      countDownAdd({
-        "subject":"11",
-        "type":"1111",
-        "date":"2020-11-11"
-      }).then((res) => {
-      });
+
     },
     //添加倒计时
     addCountDown(){
       this.dialogFormVisible=true;
     },
+    affirmCountDown(){
+      let params = this.form;
+      countDownAdd(params).then((res) => {
+
+      })
+    },
     //修改倒计时
-    modifyCountDown(){
-      this.dialogFormVisible=true;
+    modifyCountDown(countDownId){
+      this.form.countDownId =countDownId;
+      countDownDetail(this.form.countDownId).then((res) => {
+        this.form = res
+        this.dialogFormVisible=true;
+      })
     },
     //分页查询
     handleQuery(){
-
+      let params = {
+        page: this.data.currentPage,
+        size: this.data.pageSize,
+      };
+      countDownList(params).then((res) => {
+        this.list = res.dataList;
+        this.data.total = res.total;
+        console.log(res)
+      });
     },
 
     //tag关闭事件
