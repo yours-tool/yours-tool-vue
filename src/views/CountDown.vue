@@ -29,12 +29,14 @@
           <div class="content">
             <div class="remark" >
               <div class="top">
-                <div>{{item.type}}</div>
-                <div v-show="item.money!=0">金额:{{item.money}}</div>
+                <div class="left">{{item.type}}</div>
+                <div v-show="item.money!=0" class="right">金额:{{item.money}}</div>
               </div>
               <div class="bottom">
-                <div>{{item.date}}</div>
-                <div>{{item.day}}天</div>
+                <div class="left">
+                  <div class="time">{{item.date}}</div>
+                </div>
+                <div class="right">{{item.day}}</div>
               </div>
             </div>
             <div class="label">
@@ -325,9 +327,18 @@ export default {
             margin-top: 3px;
           }
           .subject{
-            text-shadow: 1px 0px 3px #98650a, 2px 1px 3px #33f5d7, -2px 0px 7px #cf1ee3;
-            font-size: 18px;
-            color: #1673c7;
+            //text-shadow: 1px 0px 3px #98650a, 2px 1px 3px #33f5d7, -2px 0px 7px #cf1ee3;
+            font-size: 25px;
+            font-weight: 600;
+            //color: #1673c7;
+            color: #de6b23;
+            //text-shadow: -1px -1px 1px #111111, 2px 2px 1px #363636;
+            text-shadow:
+                0 0 10px #0ebeff,
+                0 0 20px #0ebeff,
+                0 0 50px #0ebeff,
+                0 0 100px #0ebeff,
+                0 0 200px #0ebeff
           }
         }
         .content{
@@ -345,7 +356,10 @@ export default {
               display: flex;
               flex-direction: row;
               //justify-content: flex-start;
-              >div{
+              .left{
+                width: 100px;
+              }
+              .right{
                 width: 100px;
               }
             }
@@ -354,8 +368,20 @@ export default {
               flex-direction: row;
               //justify-content: flex-start;
               margin-top: 10px;
-              >div{
+              .left{
                 width: 100px;
+                .time {
+
+                }
+              }
+              .right{
+                width: 100px;
+                font-size: 30px;
+                color: gold;
+                //letter-spacing: 0;
+                text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+                font-weight: 1000;
+                text-align: center;
               }
             }
           }
